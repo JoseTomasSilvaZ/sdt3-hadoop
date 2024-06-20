@@ -1,0 +1,7 @@
+*.csv
+*.csv.gz
+*.gz
+*.crc
+_SUCCESS
+outputs
+output*
