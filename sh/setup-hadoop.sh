@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Variables
 CORE_SITE_PATH="/usr/local/hadoop/etc/hadoop/core-site.xml"
 
-# Check if core-site.xml exists
 if [ ! -f "$CORE_SITE_PATH" ]; then
     echo "core-site.xml not found at $CORE_SITE_PATH"
     exit 1
@@ -11,7 +9,6 @@ fi
 echo "core-site.xml found."
 echo ""
 
-# Backup core-site.xml
 cp "$CORE_SITE_PATH" "$CORE_SITE_PATH.bak"
 if [ $? -eq 0 ]; then
     echo "Backup of core-site.xml created at $CORE_SITE_PATH.bak."
@@ -21,7 +18,6 @@ else
 fi
 echo ""
 
-# Update core-site.xml with the new properties
 cat <<EOL > "$CORE_SITE_PATH"
 <configuration>
     <property>

@@ -1,5 +1,5 @@
 -- Load the data from HDFS
-data = LOAD '/user/root/data/cleaned_branch_traces.csv' USING PigStorage(',') AS (branch_addr:chararray, branch_type:chararray, taken:int, target:chararray);
+data = LOAD '/user/root/data/cleaned_dataset4.csv' USING PigStorage(',') AS (branch_addr:chararray, branch_type:chararray, taken:int, target:chararray);
 
 -- Sample of data
 sample_data = LIMIT data 10;
