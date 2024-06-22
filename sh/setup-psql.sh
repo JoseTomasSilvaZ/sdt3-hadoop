@@ -16,7 +16,6 @@ echo "PSQL Setup OK"
 cat <<EOL > "/usr/local/apache-hive-2.3.5-bin/conf/hive-site.xml"
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
-
 <configuration>
   <property>
     <name>javax.jdo.option.ConnectionURL</name>
