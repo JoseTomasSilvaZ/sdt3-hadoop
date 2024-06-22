@@ -1,168 +1,49 @@
-# Hadoop, Spark, Pig, Hive Docker Setup
+# 🐘+🐷 +🐝 - Proyecto 3 - Hadoop, Hive & Pig
 
-This repository is a Docker setup for Hadoop, Spark, Pig, and Hive, created by [Suhothayan](https://github.com/suhothayan).
+Este proyecto se centra en el uso de Apache Pig y Apache Hive para analizar los Google Workload Traces con el objetivo de comprender mejor el uso de recursos y los patrones de carga de trabajo en los centros de datos de Google, profundizando la utilización de las tecnologías mencionadas. La implementación y configuración se realizaron utilizando Docker.
+Específicamente, el dataset analizado se puede encontrar [haciendo click aquí](<https://console.cloud.google.com/storage/browser/_details/external-traces/charlie/trace-1/17571657100049929577.branch_trace.1006511.csv.gz;tab=live_object?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%257B_22k_22_3A_22_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22.csv_5C_22_22%257D%255D%22,%22s%22:%5B(%22i%22:%22objectMetadata%2Fsize%22,%22s%22:%221%22),(%22i%22:%22displayName%22,%22s%22:%220%22)%5D))>)
 
-## Docker Container Setup
+## Configuración
 
-To download the image:
+#### Clonar el proyecto
 
-```sh
-docker pull suhothayan/hadoop-spark-pig-hive:2.9.2
+```bash
+git clone https://github.com/JoseTomasSilvaZ/sdt3-hadoop.git
 ```
 
-To run the container with Hadoop, Spark, Pig, and Hive, use the following command:
+#### Correr el contenedor de Docker
 
-```sh
-docker run -it --name my-hadoop-container --memory 30g -p 50070:50070 -p 8089:8088 -p 8080:8080 suhothayan/hadoop-spark-pig-hive:2.9.2 bash
+```bash
+docker run -it -p 50070:50070 -p 8088:8088 -p 8080:8080 suhothayan/hadoop-spark-pig-hive:2.9.2 bash
 ```
 
-Restart the container and open a bash:
+#### Copiar los archivos de setup, dataset al container
 
-```sh
-docker exec -it my-hadoop-container /bin/bash
+```bash
+sudo docker cp pig-scripts <container_id>:/home
+sudo docker cp sh <container_id>:/home
+sudo docker cp datasets<container_id>:/home
 ```
 
-## Copying the Dataset to the Container
+#### Ejecutar el setup
 
-To copy your dataset into the Docker container, use the following command:
+```bash
+sudo docker exec -it <container_id> bin/bash
+cd /home/sh
+chmod +x *.sh
+./setup-hadoop.sh && ./setup-hdfs.sh && ./setup-psql.sh
 
-```sh
-docker cp <dataset_path> my-hadoop-container:/home/dataset1.csv
 ```
 
-Replace `<dataset_path>` with the path to your dataset.
+#### Agregar dataset a HDFS
 
-## HDFS Setup
-
-1. **Create a Directory in HDFS:**
-
-    ```sh
-    hdfs dfs -mkdir -p /user/hadoop/datasets
-    ```
-
-2. **Upload the CSV File to HDFS:**
-
-    ```sh
-    hdfs dfs -put /home/dataset1.csv /user/hadoop/datasets/
-    ```
-
-3. **Check the file:**
-
-    ```sh
-    hdfs dfs -ls /user/hadoop/datasets/
-    ```
-
-## Pig Script for Exploratory Analysis
-
-To copy and execute a Pig script for exploratory data analysis, follow these steps:
-
-1. **Copy the Pig Script to the Container:**
-
-    ```sh
-    docker cp analisis.pig my-hadoop-container:/home/
-    ```
-
-    Replace `<pig_script_path>` with your preferred path.
-
-2. **Run the Pig Script:**
-
-    Inside the container, navigate to the home directory and run the Pig script:
-
-    ```sh
-    pig analisis_exploratorio.pig
-    ```
-
-## Retrieving Output from Container to Local Machine
-
-Inside the container, navigate to the home directory and run:
-
-```sh
-docker cp my-hadoop-container:/home/output <local_path>
+```bash
+hdfs dfs -put datasets/<dataset_name>.csv data
 ```
 
-Replace `<local_path>` with your preferred path.
+Todo listo 🎉
 
-## Hive
+## Authors
 
-Run the next command to start Hive:
-
-```sh
-hive
-```
-
-## Troubleshooting
-
-If you encounter connection issues with Pig and the Hadoop Job Server, follow these steps:
-
-1. Find the container ID:
-
-    ```sh
-    docker ps
-    ```
-
-2. Modify `update_hadoop.sh` with your container ID on line 27:
-
-    ```xml
-    <value>hdfs://<containerID>:9000</value>
-    ```
-
-3. Copy `update_hadoop.sh` to your container:
-
-```sh
-docker cp update_hadoop.sh <container ID>:/home/
-```
-
-4. Change permissions:
-
-    ```sh
-    chmod +x update_hadoop.sh
-    ```
-
-5. Run the script:
-
-    ```sh
-    ./update_hadoop.sh
-    ```
-
-6. Run the Pig script.
-
-## Additional Notes
-
-- If Hive is not working, restart the container.
-- For automated queries, make the script executable and run it:
-
-    ```sh
-    chmod +x automate_sampling.sh
-    ./automate_sampling.sh
-    ```
-
-  Make sure to copy the `.sh` file from the host machine to the container.
-
-- To increase RAM allocation:
-
-    1. Find the container ID:
-
-        ```sh
-        docker ps
-        ```
-
-    2. Modify `update_hadoop_config.sh` with your container ID on line 35:
-
-        ```xml
-        <value>hdfs://<containerID>:9000</value>
-        ```
-
-    3. Copy `update_hadoop_config.sh` to your container:
-
-      ```sh
-      docker cp update_hadoop_config.sh <container ID>:/home/
-      ```
-
-    4. Change permissions and run the script:
-
-        ```sh
-        chmod +x update_hadoop_config.sh
-        ./update_hadoop_config.sh
-        ```
-
-5. Run the Pig script.
+- [@josetomassilvaz](https://github.com/JoseTomasSilvaZ)
+- [@fcoagp](https://github.com/fcoagp)
