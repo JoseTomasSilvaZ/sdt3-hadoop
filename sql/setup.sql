@@ -54,3 +54,16 @@ CREATE TABLE unique_targets AS
 SELECT branch_type, COUNT(DISTINCT target) AS unique_target_count
 FROM dataset
 GROUP BY branch_type;
+
+
+CREATE TABLE unique_branch_addr AS
+SELECT branch_addr, COUNT(*) AS count
+FROM dataset
+GROUP BY branch_addr;
+
+
+CREATE TABLE frequency_by_target AS
+SELECT target, COUNT(*) AS frequency
+FROM dataset
+GROUP BY target
+ORDER BY frequency DESC;
