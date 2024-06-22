@@ -22,7 +22,7 @@ cat <<EOL > "$CORE_SITE_PATH"
 <configuration>
     <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://d7634826ca49:9000</value>
+        <value>hdfs://f04ca752447e:9000</value>
     </property>
     <property>
         <name>ipc.client.connect.max.retries</name>
