@@ -2,10 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-# Define the output directory
 output_dir = 'outputs/output_final'
 
-# Helper function to get all part file paths
 def get_all_part_file_paths(directory):
     files = []
     for file in os.listdir(directory):
@@ -13,7 +11,6 @@ def get_all_part_file_paths(directory):
             files.append(os.path.join(directory, file))
     return files
 
-# Function to read and concatenate all part files into a single DataFrame
 def read_and_concatenate_part_files(files, column_names):
     dataframes = [pd.read_csv(file, header=None, names=column_names) for file in files]
     return pd.concat(dataframes, ignore_index=True)
