@@ -5,6 +5,11 @@ data = LOAD '/user/root/data/cleaned_dataset4.csv' USING PigStorage(',') AS (bra
 sample_data = LIMIT data 10;
 STORE sample_data INTO 'file:///home/output/sample_data' USING PigStorage(',');
 
+--- Total rows
+total_records = FOREACH (GROUP data ALL) GENERATE COUNT(data) as total;
+STORE total_records INTO 'file:///home/output/total_records' USING PigStorage(',');
+DUMP total_records;
+
 -- Filter branches that were never taken
 never_taken = FILTER data BY taken == 0;
 grouped_never_taken = GROUP never_taken BY branch_type;
